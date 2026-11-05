@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b365l03knl0bj" path="res://enemy.gd" id="1_4gyqm"]
 [ext_resource type="Texture2D" uid="uid://bv1f7aohwmf16" path="res://monster/slime.png" id="1_7k104"]
+[ext_resource type="Texture2D" uid="uid://cjlwl1xi173hv" path="res://monster/slimeatk2.png" id="3_qi2p4"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4gyqm"]
 atlas = ExtResource("1_7k104")
@@ -27,6 +28,30 @@ region = Rect2(664, 0, 166, 173)
 atlas = ExtResource("1_7k104")
 region = Rect2(830, 0, 166, 173)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_hb8ge"]
+atlas = ExtResource("3_qi2p4")
+region = Rect2(0, 0, 166, 183)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e1ltt"]
+atlas = ExtResource("3_qi2p4")
+region = Rect2(166, 0, 166, 183)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dxifv"]
+atlas = ExtResource("3_qi2p4")
+region = Rect2(332, 0, 166, 183)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pwjut"]
+atlas = ExtResource("3_qi2p4")
+region = Rect2(498, 0, 166, 183)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n0g06"]
+atlas = ExtResource("3_qi2p4")
+region = Rect2(664, 0, 166, 183)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ar8e5"]
+atlas = ExtResource("3_qi2p4")
+region = Rect2(830, 0, 166, 183)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_1bu8k"]
 animations = [{
 "frames": [{
@@ -51,20 +76,51 @@ animations = [{
 "loop": 1,
 "name": &"Slime",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hb8ge")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e1ltt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dxifv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pwjut")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n0g06")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ar8e5")
+}],
+"loop": 0,
+"name": &"Slimeatk",
+"speed": 10.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4gyqm"]
 radius = 32.0
 height = 64.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_wvhbo"]
+radius = 48.0
+
 [node name="Enemy" type="CharacterBody2D" unique_id=1174805948 groups=["Enemies"]]
 script = ExtResource("1_4gyqm")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1011769856]
-position = Vector2(0, 0.03802579)
-scale = Vector2(0.57339174, 0.45130667)
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1011769856 groups=["Enemies"]]
+position = Vector2(1.0000005, -3.8146973e-06)
+scale = Vector2(0.5859182, 0.5362766)
 sprite_frames = SubResource("SpriteFrames_1bu8k")
 animation = &"Slime"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1596452244]
 shape = SubResource("CapsuleShape2D_4gyqm")
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=1648677787]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=681327781 groups=["Enemies"]]
+shape = SubResource("CircleShape2D_wvhbo")

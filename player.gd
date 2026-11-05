@@ -9,6 +9,7 @@ extends CharacterBody2D
 @export var shoot_mana_cost: float = 10.0
 @export var melee_mana_cost: float = 0.0     # Chém thường (để 0.0 nếu không tốn mana)
 @export var mana_regen_rate: float = 5.0     # Tự hồi phục 5 điểm Mana mỗi giây
+@export var melee_damage: float = 35.0       # Sát thương đòn chém thường
 
 var current_health: float = 100.0
 var current_mana: float = 50.0
@@ -17,19 +18,31 @@ var current_exp: float = 0.0
 # Nạp sẵn scene kiếm khí
 const SWORD_BEAM_SCENE = preload("res://sword_beam.tscn")
 
+# Tham chiếu tới vùng va chạm cận chiến
+@onready var melee_hitbox: Area2D = $MeleeHitbox
+@onready var melee_collision: CollisionShape2D = $MeleeHitbox/CollisionShape2D
+
 # Node con và tham chiếu giao diện
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var hud: CanvasLayer = get_tree().root.find_child("HUD", true, false)
 
 var is_attacking: bool = false
 
+
 func _ready() -> void:
 	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
-	
+	add_to_group("Player")
 	if anim:
 		anim.animation_finished.connect(_on_animation_finished)
 	
-	# Đồng bộ toàn bộ chỉ số lên HUD ngay khi vào game
+	# Mặc định tắt vùng va chạm chém khi vừa vào game
+	if melee_collision:
+		melee_collision.set_deferred("disabled", true)
+
+	# Bắt sự kiện khi vùng chém quét trúng vật thể
+	if melee_hitbox:
+		melee_hitbox.body_entered.connect(_on_melee_hitbox_body_entered)
+	
 	_cap_nhat_toan_bo_hud()
 
 func _physics_process(delta: float) -> void:
@@ -91,12 +104,19 @@ func _perform_melee() -> void:
 	is_attacking = true
 	velocity = Vector2.ZERO
 	
-	# Quay mặt theo vị trí chuột khi chém
+	# Hướng mặt theo con trỏ chuột
 	var mouse_pos = get_global_mouse_position()
 	var attack_direction = (mouse_pos - global_position).normalized()
+	
 	if anim:
 		anim.flip_h = (attack_direction.x < 0)
 		anim.play("melee")
+
+	# Xoay vùng chém theo hướng chuột và bật va chạm
+	if melee_hitbox:
+		melee_hitbox.rotation = attack_direction.angle()
+	if melee_collision:
+		melee_collision.set_deferred("disabled", false)
 
 # --- ĐÒN BẮN KIẾM KHÍ TẦM XA (CHUỘT PHẢI) ---
 func _shoot_sword_beam() -> void:
@@ -124,12 +144,22 @@ func _shoot_sword_beam() -> void:
 	
 	get_parent().add_child(beam)
 
-# Mở lại cờ di chuyển khi hoàn tất animation chém hoặc bắn
+# Xử lý khi hoàn tất animation chém hoặc bắn
 func _on_animation_finished() -> void:
 	if anim.animation == "melee" or anim.animation == "shoot":
 		is_attacking = false
+		# Tắt vùng va chạm cận chiến sau khi vung kiếm xong
+		if melee_collision:
+			melee_collision.set_deferred("disabled", true)
 
-# --- HỆ THỐNG QUẢN LÝ MÁU, MANA, HUD ---
+# Xử lý khi kiếm chạm trúng quái
+func _on_melee_hitbox_body_entered(body: Node2D) -> void:
+	if body.is_in_group("Enemies"):
+		print("Chém cận chiến trúng: ", body.name)
+		if body.has_method("take_damage"):
+			body.take_damage(melee_damage)
+
+# --- HỆ THỐNG QUẢN LÝ MÁU, MANA, EXP & HUD ---
 func _cap_nhat_toan_bo_hud() -> void:
 	if hud:
 		hud.update_health(current_health, max_health)
@@ -155,3 +185,9 @@ func restore_mana(amount: float) -> void:
 	current_mana = clamp(current_mana + amount, 0.0, max_mana)
 	if hud:
 		hud.update_mana(current_mana, max_mana)
+
+func gain_exp(amount: float) -> void:
+	current_exp += amount
+	print("Nhận EXP: +", amount, " (Tổng: ", current_exp, "/", max_exp, ")")
+	if hud:
+		hud.update_exp(current_exp, max_exp)

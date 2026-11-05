@@ -163,12 +163,12 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wvhbo"]
-size = Vector2(21, 37)
+size = Vector2(43, 56)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1bu8k"]
-radius = 51.088158
+radius = 54.00926
 
-[node name="player" type="CharacterBody2D" unique_id=225024994]
+[node name="player" type="CharacterBody2D" unique_id=225024994 groups=["Player"]]
 motion_mode = 1
 script = ExtResource("1_4flbx")
 
@@ -180,7 +180,7 @@ animation = &"walk"
 speed_scale = 0.5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1786071230]
-position = Vector2(-1, 2)
+position = Vector2(1.5, 2)
 shape = SubResource("RectangleShape2D_wvhbo")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1065815823]
@@ -188,5 +188,6 @@ shape = SubResource("RectangleShape2D_wvhbo")
 [node name="MeleeHitbox" type="Area2D" parent="." unique_id=1830712835]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MeleeHitbox" unique_id=473977390]
-position = Vector2(1, 1)
+position = Vector2(13, 1)
 shape = SubResource("CircleShape2D_1bu8k")
+disabled = true

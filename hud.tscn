@@ -2,13 +2,22 @@
 
 [ext_resource type="Script" uid="uid://bpxsffiu4qe0r" path="res://hud.gd" id="1_37p78"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wvhbo"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2hs0m"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1jxqw"]
+bg_color = Color(0.92629945, 2.7193873e-06, 3.85046e-07, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8sq4i"]
 bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_37p78"]
 bg_color = Color(0.33269837, 0.5936671, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ibjym"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xeyld"]
+bg_color = Color(1, 1, 1, 1)
 
 [node name="HUD" type="CanvasLayer" unique_id=1393481657]
 script = ExtResource("1_37p78")
@@ -25,19 +34,57 @@ custom_minimum_size = Vector2(100, 12)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9492286, 0, 0.0635482, 1)
 theme_override_colors/font_outline_color = Color(1, 0, 0, 1)
-theme_override_styles/background = SubResource("StyleBoxFlat_wvhbo")
+theme_override_styles/background = SubResource("StyleBoxFlat_2hs0m")
+theme_override_styles/fill = SubResource("StyleBoxFlat_1jxqw")
 value = 100.0
 show_percentage = false
+
+[node name="hp_text" type="Label" parent="VBoxContainer/health" unique_id=619172580]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 10
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="mana" type="ProgressBar" parent="VBoxContainer" unique_id=1062140971]
 custom_minimum_size = Vector2(100, 10)
 layout_mode = 2
+theme_override_font_sizes/font_size = 10
 theme_override_styles/background = SubResource("StyleBoxFlat_8sq4i")
 theme_override_styles/fill = SubResource("StyleBoxFlat_37p78")
 max_value = 50.0
 value = 50.0
+show_percentage = false
+
+[node name="mana_text" type="Label" parent="VBoxContainer/mana" unique_id=1726977004]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 10
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="exp" type="ProgressBar" parent="VBoxContainer" unique_id=411007608]
 custom_minimum_size = Vector2(30, 10)
 layout_mode = 2
-size_flags_horizontal = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_ibjym")
+theme_override_styles/fill = SubResource("StyleBoxFlat_xeyld")
+show_percentage = false
+
+[node name="exp_text" type="Label" parent="VBoxContainer/exp" unique_id=1773550027]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 10
+horizontal_alignment = 1
+vertical_alignment = 1
