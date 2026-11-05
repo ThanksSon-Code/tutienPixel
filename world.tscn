@@ -7,5 +7,11 @@
 
 [node name="player" parent="." unique_id=225024994 instance=ExtResource("1_f3sb7")]
 position = Vector2(579, 326)
+speed = null
+max_health = null
+max_mana = null
+max_exp = null
+melee_mana_cost = null
+mana_regen_rate = null
 
 [node name="HUD" parent="." unique_id=1393481657 instance=ExtResource("2_fj7yv")]
