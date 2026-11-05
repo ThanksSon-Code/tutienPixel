@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://bvcjdokm062ij" path="res://player.gd" id="1_4flbx"]
 [ext_resource type="Texture2D" uid="uid://rptbqvxb1mqv" path="res://playerAnimation/Silver-haired Mage Sprite Sheet.png" id="2_i3pqv"]
 [ext_resource type="Texture2D" uid="uid://bk74vkr485u24" path="res://playerAnimation/Hoạt ảnh chém kiếm pixel art 6 khung.png" id="3_i3pqv"]
+[ext_resource type="Texture2D" uid="uid://m8jufjej5u7r" path="res://playerAnimation/shoot.png" id="4_sweqy"]
+[ext_resource type="Texture2D" uid="uid://7vcllgtycr34" path="res://playerAnimation/shoot2.png" id="5_2hs0m"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hqtel"]
 atlas = ExtResource("2_i3pqv")
@@ -31,6 +33,30 @@ region = Rect2(550, 512, 527, 512)
 [sub_resource type="AtlasTexture" id="AtlasTexture_n7ghd"]
 atlas = ExtResource("3_i3pqv")
 region = Rect2(1063, 512, 473, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_op7ga"]
+atlas = ExtResource("4_sweqy")
+region = Rect2(0, 0, 361, 343)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q13i1"]
+atlas = ExtResource("4_sweqy")
+region = Rect2(361, 0, 361, 343)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pylmc"]
+atlas = ExtResource("4_sweqy")
+region = Rect2(722, 0, 361, 343)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pbfsw"]
+atlas = ExtResource("4_sweqy")
+region = Rect2(1115, 0, 349, 343)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5tmop"]
+atlas = ExtResource("5_2hs0m")
+region = Rect2(552, 0, 403, 343)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7ahtn"]
+atlas = ExtResource("5_2hs0m")
+region = Rect2(1623, 0, 541, 343)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nvl01"]
 atlas = ExtResource("2_i3pqv")
@@ -87,7 +113,30 @@ animations = [{
 }],
 "loop": 0,
 "name": &"melee",
-"speed": 10.0
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_op7ga")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q13i1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pylmc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pbfsw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5tmop")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7ahtn")
+}],
+"loop": 0,
+"name": &"shoot",
+"speed": 20.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -116,19 +165,28 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wvhbo"]
 size = Vector2(21, 37)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_1bu8k"]
+radius = 51.088158
+
 [node name="player" type="CharacterBody2D" unique_id=225024994]
 motion_mode = 1
 script = ExtResource("1_4flbx")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2115609984]
-position = Vector2(1.9073486e-06, 1)
-scale = Vector2(0.1, 0.1)
+position = Vector2(0, 1)
+scale = Vector2(0.11752052, 0.13951124)
 sprite_frames = SubResource("SpriteFrames_fj7yv")
 animation = &"walk"
 speed_scale = 0.5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1786071230]
-position = Vector2(4.5, 3.5)
+position = Vector2(-1, 2)
 shape = SubResource("RectangleShape2D_wvhbo")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1065815823]
+
+[node name="MeleeHitbox" type="Area2D" parent="." unique_id=1830712835]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MeleeHitbox" unique_id=473977390]
+position = Vector2(1, 1)
+shape = SubResource("CircleShape2D_1bu8k")

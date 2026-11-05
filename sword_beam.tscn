@@ -1,19 +1,44 @@
 [gd_scene format=3 uid="uid://35tiarachm55"]
 
 [ext_resource type="Script" uid="uid://db1bufqricahs" path="res://sword_beam.gd" id="1_wlisg"]
-[ext_resource type="Texture2D" uid="uid://cpwv5noski1xo" path="res://playerAnimation/kiem-khi.png" id="2_wu1sk"]
+[ext_resource type="Texture2D" uid="uid://ddq84wtvjgrla" path="res://playerAnimation/kiemkhi1.png" id="2_2oo54"]
+[ext_resource type="Texture2D" uid="uid://dxlcas0p3ly5d" path="res://playerAnimation/kiemkhi2.png" id="3_ohud2"]
+[ext_resource type="Texture2D" uid="uid://cp0euarnii3l6" path="res://playerAnimation/kiemkhi3.png" id="4_gcf14"]
+[ext_resource type="Texture2D" uid="uid://dthstnpm1x8qm" path="res://playerAnimation/kiemkhi4.png" id="5_yvsst"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3302q"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_2oo54")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_ohud2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_gcf14")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_yvsst")
+}],
+"loop": 1,
+"name": &"fly",
+"speed": 5.0
+}]
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_ifow5"]
-a = Vector2(-11, 3)
-b = Vector2(25, 2)
+a = Vector2(-12, 2)
+b = Vector2(31, 2)
 
 [node name="sword_beam" type="Area2D" unique_id=83534687]
 script = ExtResource("1_wlisg")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1404688428]
-position = Vector2(1.0000038, 1)
-scale = Vector2(0.616, 0.1954023)
-texture = ExtResource("2_wu1sk")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=432384242]
+scale = Vector2(0.29478294, 0.1357843)
+sprite_frames = SubResource("SpriteFrames_3302q")
+animation = &"fly"
+frame = 3
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=408969208]
 shape = SubResource("SegmentShape2D_ifow5")

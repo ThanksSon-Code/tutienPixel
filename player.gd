@@ -6,7 +6,8 @@ extends CharacterBody2D
 @export var max_mana: float = 50.0
 @export var max_exp: float = 100.0
 
-@export var melee_mana_cost: float = 8.0     # Tiêu hao mana khi vung kiếm khí
+@export var shoot_mana_cost: float = 10.0
+@export var melee_mana_cost: float = 0.0     # Chém thường (để 0.0 nếu không tốn mana)
 @export var mana_regen_rate: float = 5.0     # Tự hồi phục 5 điểm Mana mỗi giây
 
 var current_health: float = 100.0
@@ -64,16 +65,15 @@ func _physics_process(delta: float) -> void:
 
 # --- BẮT PHÍM TUNG CHIÊU & TEST CHỈ SỐ ---
 func _unhandled_input(event: InputEvent) -> void:
-	# Bấm chuột phải hoặc phím E: Vung kiếm chém + Phóng kiếm khí
-	var is_skill_triggered = false
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-		is_skill_triggered = true
-	elif event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_E:
-		is_skill_triggered = true
-	
-	if is_skill_triggered and not is_attacking:
-		if current_mana >= melee_mana_cost:
-			_perform_melee_with_beam()
+	if event is InputEventMouseButton and event.pressed:
+		# CHUỘT TRÁI: Chém cận chiến (Melee)
+		if event.button_index == MOUSE_BUTTON_LEFT and not is_attacking:
+			_perform_melee()
+
+		# CHUỘT PHẢI: Bắn kiếm khí tầm xa
+		elif event.button_index == MOUSE_BUTTON_RIGHT and not is_attacking:
+			if current_mana >= shoot_mana_cost:
+				_shoot_sword_beam()
 
 	# Phím test tăng giảm chỉ số trực quan
 	if event is InputEventKey and event.pressed and not event.echo:
@@ -86,25 +86,37 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.keycode == KEY_L:
 			restore_mana(15.0)     # Phím L: Hồi 15 Mana
 
-# --- HÀM TUNG CHIÊU VUNG KIẾM + PHÓNG KIẾM KHÍ ---
-func _perform_melee_with_beam() -> void:
+# --- ĐÒN CHÉM CẬN CHIẾN (CHUỘT TRÁI) ---
+func _perform_melee() -> void:
 	is_attacking = true
 	velocity = Vector2.ZERO
 	
-	# Trừ mana và cập nhật HUD
-	current_mana -= melee_mana_cost
-	if hud:
-		hud.update_mana(current_mana, max_mana)
-
-	# Lấy hướng trỏ chuột và quay mặt nhân vật
+	# Quay mặt theo vị trí chuột khi chém
 	var mouse_pos = get_global_mouse_position()
 	var attack_direction = (mouse_pos - global_position).normalized()
-
 	if anim:
 		anim.flip_h = (attack_direction.x < 0)
 		anim.play("melee")
 
-	# Khởi tạo thực thể kiếm khí bay đi
+# --- ĐÒN BẮN KIẾM KHÍ TẦM XA (CHUỘT PHẢI) ---
+func _shoot_sword_beam() -> void:
+	is_attacking = true
+	velocity = Vector2.ZERO
+	
+	# Trừ mana và cập nhật HUD
+	current_mana -= shoot_mana_cost
+	if hud:
+		hud.update_mana(current_mana, max_mana)
+
+	# Lấy hướng trỏ chuột và lật mặt nhân vật
+	var mouse_pos = get_global_mouse_position()
+	var attack_direction = (mouse_pos - global_position).normalized()
+	
+	if anim:
+		anim.flip_h = (attack_direction.x < 0)
+		anim.play("shoot")
+
+	# Tạo thực thể kiếm khí bay về phía con trỏ chuột
 	var beam = SWORD_BEAM_SCENE.instantiate()
 	beam.global_position = global_position + (attack_direction * 12.0)
 	beam.direction = attack_direction
@@ -112,8 +124,9 @@ func _perform_melee_with_beam() -> void:
 	
 	get_parent().add_child(beam)
 
+# Mở lại cờ di chuyển khi hoàn tất animation chém hoặc bắn
 func _on_animation_finished() -> void:
-	if anim.animation == "melee":
+	if anim.animation == "melee" or anim.animation == "shoot":
 		is_attacking = false
 
 # --- HỆ THỐNG QUẢN LÝ MÁU, MANA, HUD ---
