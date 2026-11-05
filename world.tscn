@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://diygwv781k3tm" path="res://player.tscn" id="1_f3sb7"]
 [ext_resource type="PackedScene" uid="uid://cfdocv5x2aw7" path="res://hud.tscn" id="2_fj7yv"]
-[ext_resource type="PackedScene" uid="uid://r7bwl4xlp7vi" path="res://enemy.tscn" id="3_tlwt5"]
+[ext_resource type="PackedScene" uid="uid://bqf82f2qc78lp" path="res://spawner.tscn" id="4_aqk2v"]
 
 [node name="world" type="Node2D" unique_id=1318485481]
 
@@ -11,11 +11,4 @@ position = Vector2(579, 326)
 
 [node name="HUD" parent="." unique_id=1393481657 instance=ExtResource("2_fj7yv")]
 
-[node name="Enemy" parent="." unique_id=1174805948 instance=ExtResource("3_tlwt5")]
-position = Vector2(849, 191)
-
-[node name="Enemy2" parent="." unique_id=1473944840 instance=ExtResource("3_tlwt5")]
-position = Vector2(872, 317)
-
-[node name="Enemy3" parent="." unique_id=1399438080 instance=ExtResource("3_tlwt5")]
-position = Vector2(866, 468)
+[node name="Spawner" parent="." unique_id=874746744 instance=ExtResource("4_aqk2v")]
